@@ -80,8 +80,10 @@ class Browser:
         options.add_experimental_option('useAutomationExtension', False)
 
         # Don't ask to save passwords
-        options.add_experimental_option('credentials_enable_service', False);
-        options.add_experimental_option('profile.password_manager_enabled', False)
+        options.add_experimental_option('prefs', {
+            'credentials_enable_service': False,
+            'profile.password_manager_enabled': False
+        })
 
         self.driver = webdriver.Chrome(chrome_options=options)
         self.wait = WebDriverWait(self.driver, 5)
