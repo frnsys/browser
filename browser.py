@@ -37,7 +37,7 @@ class Browser:
 
     def quit(self):
         if hasattr(self, 'driver'):
-            self.driver.delete_all_cookies()
+            self.clear_cookies()
             self.driver.quit()
 
     def save_cookies(self):
@@ -64,6 +64,9 @@ class Browser:
             self.driver.add_cookie(c)
         return True
 
+    def clear_cookies(self):
+        self.driver.delete_all_cookies()
+
     def _reload_driver(self, opts=[]):
         self.quit()
 
@@ -75,6 +78,10 @@ class Browser:
         options.add_argument('--no-sandbox')
         options.add_experimental_option('excludeSwitches', ['enable-automation'])
         options.add_experimental_option('useAutomationExtension', False)
+
+        # Don't ask to save passwords
+        options.add_experimental_option('credentials_enable_service', False);
+        options.add_experimental_option('profile.password_manager_enabled', False)
 
         self.driver = webdriver.Chrome(chrome_options=options)
         self.wait = WebDriverWait(self.driver, 5)
