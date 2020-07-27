@@ -5,7 +5,7 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from pyvirtualdisplay.smartdisplay import SmartDisplay
 
@@ -103,6 +103,11 @@ class Browser:
     def click(self, selector, wait=True):
         if wait: self.wait.until(clickable((By.CSS_SELECTOR, selector)))
         self.driver.find_element_by_css_selector(selector).click()
+
+    def select(self, selector, value):
+        # Dropdowns
+        select = Select(self.driver.find_element_by_css_selector(selector))
+        select.select_by_value(value)
 
     def html(self):
         html = self.driver.find_element_by_tag_name('html').get_attribute('innerHTML')
