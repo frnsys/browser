@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 from pyvirtualdisplay.smartdisplay import SmartDisplay
+from http.cookiejar import MozillaCookieJar
 
 # For convenience
 visible = EC.visibility_of_element_located
@@ -49,19 +50,35 @@ class Browser:
     def get_cookies(self):
         return self.driver.get_cookies()
 
-    def load_cookies(self):
+    def load_cookies(self, path=None):
         # Note: to load cookies for a domain, you must
         # first navigate to that domain.
         self.logger.info('Loading cookies')
-        try:
-            with open(self.cookies_file, 'r') as f:
-                cookies = json.load(f)
-        except FileNotFoundError:
-            return False
-        for c in cookies:
-            if isinstance(c.get('expiry'), float):
-                c['expiry'] = int(c['expiry'])
-            self.driver.add_cookie(c)
+        if path is None:
+            path = self.cookies_file
+
+        if path.endswith('.json'):
+            try:
+                with open(self.cookies_file, 'r') as f:
+                    cookies = json.load(f)
+            except FileNotFoundError:
+                return False
+            for c in cookies:
+                if isinstance(c.get('expiry'), float):
+                    c['expiry'] = int(c['expiry'])
+                self.driver.add_cookie(c)
+        elif path.endswith('.txt'):
+            # Assume Mozilla/Netscape format
+            jar = MozillaCookieJar(path)
+            jar.load()
+            for c in jar:
+                cookie = {k: getattr(c, k) for k in ['domain', 'name', 'value', 'secure', 'path']}
+                if c.expires: cookie['expiry'] = c.expires
+                print(cookie)
+                self.driver.add_cookie(cookie)
+        else:
+            raise Exception('Unrecognized cookie extension')
+
         return True
 
     def clear_cookies(self):
