@@ -74,7 +74,6 @@ class Browser:
             for c in jar:
                 cookie = {k: getattr(c, k) for k in ['domain', 'name', 'value', 'secure', 'path']}
                 if c.expires: cookie['expiry'] = c.expires
-                print(cookie)
                 self.driver.add_cookie(cookie)
         else:
             raise Exception('Unrecognized cookie extension')
