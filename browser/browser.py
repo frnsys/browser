@@ -29,7 +29,7 @@ class Browser:
         self.cookies_file = cookies_file
 
         if virtual_display:
-            self.display = SmartDisplay(visible=0, size=(1920, 1080))
+            self.display = SmartDisplay(visible=0, backend='xvfb', size=(1920, 1080))
             self.display.start()
         else:
             self.display = None
@@ -102,6 +102,7 @@ class Browser:
         })
 
         self.driver = webdriver.Chrome(chrome_options=options)
+        self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 5)
         self.actions = ActionChains(self.driver)
 
@@ -111,11 +112,10 @@ class Browser:
 
     def screenshot(self, fname=None):
         fname = fname or 'data/shots/{}.png'.format(datetime.utcnow().timestamp())
-        if self.display:
-            img = self.display.waitgrab()
-            img.save(fname)
-        else:
-            self.driver.save_screenshot(fname)
+        # if self.display:
+        #     img = self.display.waitgrab()
+        #     img.save(fname)
+        self.driver.save_screenshot(fname)
         return fname
 
     def visit(self, url):
