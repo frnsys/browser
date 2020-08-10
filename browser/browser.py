@@ -142,6 +142,9 @@ class Browser:
     def wait_for(self, selector):
         self.wait.until(visible((By.CSS_SELECTOR, selector)))
 
+    def execute_script(self, script):
+        self.driver.execute_script(script)
+
     @property
     def url(self):
         return self.driver.current_url
