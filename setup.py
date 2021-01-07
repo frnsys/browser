@@ -12,7 +12,7 @@ setup(
     packages=['browser'],
     install_requires=[
         'selenium==3.141.0',
-        'lxml==4.5.0',
+        'lxml==4.6.2',
         'cssselect==1.0.3',
         'PyVirtualDisplay==0.2.4'
     ],
