@@ -13,3 +13,20 @@ Supports:
 - All the basic functionality of `selenium`, with some convenience methods
 - Taking screenshots of pages
 - Saving/loading cookies
+
+# Basic Usage
+
+```python
+from browser import Browser
+
+b = Browser(
+    cookies_file='data/cookies.json',
+    virtual_display=True,
+    log_file=None)
+
+b.visit('https://www.google.com')
+html = b.html()
+divs = html.cssselect('div')
+```
+
+See `browser/browser.py` for more.
