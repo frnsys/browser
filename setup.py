@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='browser',
-    version='0.0.1',
+    version='0.0.2',
     description='convenience interface for web scraping',
     url='https://github.com/frnsys/browser',
     author='Francis Tseng',
@@ -12,8 +12,9 @@ setup(
     packages=['browser'],
     install_requires=[
         'selenium==3.141.0',
-        'lxml==4.5.0',
+        'lxml==4.9.0',
         'cssselect==1.0.3',
-        'PyVirtualDisplay==0.2.4'
+        'PyVirtualDisplay==3.0',
+        'pyscreenshot==3.0'
     ],
 )
